@@ -1,7 +1,7 @@
 import * as TYPES from './types'
 import fire from '../fire'
 import firebase from 'firebase'
-
+import history from '../history'
 const members = fire.database().ref('members');
 const unapprovedMembers = fire.database().ref('unapprovedMembers');
 const game = fire.database().ref('live/game');
@@ -91,10 +91,8 @@ export function signIn(){
             let  uid = result.additionalUserInfo.profile.id;
             userPath.child(uid).once("value",function (data) {
                 let registeredMember = data.val()
-                const userKey = Object.keys(window.localStorage)
-                    .filter(it => it.startsWith('firebase:authUser:'))[0];
 
-                const user = JSON.parse(window.localStorage.getItem(userKey)) || {};
+                const user = getUserFromLocalStorage();
 
                 if (registeredMember!=null){
 
@@ -203,5 +201,24 @@ export function jumpToMove(position) {
             type:TYPES.JUMP_TO_MOVE_CURRENT_GAME,
             payload:position
         })
+    }
+}
+
+function getUserFromLocalStorage(){
+    const userKey = Object.keys(window.localStorage)
+        .filter(it => it.startsWith('firebase:authUser:'))[0];
+
+    const user = JSON.parse(window.localStorage.getItem(userKey)) || {};
+    return user;
+}
+
+export function challenge(opponent){
+    return dispatch => {
+        // TODO
+        // get Current User Data.
+        // insert into games ref.
+
+        // redirect to PLAY page with URL.
+        history.push('/play')
     }
 }

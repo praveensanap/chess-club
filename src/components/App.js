@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {BrowserRouter ,Switch , Route} from 'react-router-dom';
+import {Router ,Switch , Route} from 'react-router-dom';
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 import AppBar from 'material-ui/AppBar';
 import User from '../containers/User';
@@ -19,6 +19,8 @@ import LiveGamePage from '../containers/liveGamePage';
 import EditProfile from '../containers/editProfile'
 
 import './App.css';
+
+import history from '../history'
 
 
 const theme = createMuiTheme();
@@ -42,7 +44,7 @@ class AppShell extends Component {
     render() {
         const { classes } = this.props;
         return (
-            <BrowserRouter>
+            <Router history={history}>
                 <MuiThemeProvider theme={theme}>
                     <div className={classes.root}>
                         <Grid container direction="column">
@@ -80,7 +82,7 @@ class AppShell extends Component {
                         </div>
                     </Drawer>
                 </MuiThemeProvider>
-            </BrowserRouter>
+            </Router>
         );
       }
 }
