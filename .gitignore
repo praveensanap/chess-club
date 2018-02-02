@@ -24,5 +24,7 @@ yarn-error.log*
 .idea
 *.iml
 
+config.js
+
 # FIREBASE CONFIG
 src/firebase-config.js
