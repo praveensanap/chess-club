@@ -89,6 +89,7 @@ export function signIn(){
 
         fire.auth().signInWithPopup(provider).then(function (result) {
             let  uid = result.additionalUserInfo.profile.id;
+            console.log(result)
             userPath.child(uid).once("value",function (data) {
                 let registeredMember = data.val()
 
@@ -98,7 +99,7 @@ export function signIn(){
 
                     dispatch({
                         type : TYPES.LOGIN,
-                        payload: user
+                        payload: registeredMember
                     })
                 }else{
                     let userInfo = {[uid]: result.additionalUserInfo.profile}
@@ -213,12 +214,37 @@ function getUserFromLocalStorage(){
 }
 
 export function challenge(opponent){
-    return dispatch => {
-        // TODO
+    return (dispatch,getState) => {
         // get Current User Data.
+        let user = getUserFromLocalStorage();
+        let userId = user.providerData[0]["uid"];
+        let member= getState().members[userId];
+        let userBeforeRating = member.rating || 1200;
+        let opponentBeforeRating = opponent.rating || 1200;
+
         // insert into games ref.
+        let newRef = game2.push({
+            fen:'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+            turn:'w',
+            history:[{move:'',fen:'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1'}],
+            white:{
+                name: member.name,
+                id:member.id,
+                beforeRating: userBeforeRating
+            },
+            black:{
+                name: opponent.name,
+                id: opponent.id,
+                beforeRating: opponentBeforeRating
+            }
+        });
+        dispatch({
+            type: TYPES.START_NEW_GAME,
+            payload: newRef.getKey()
+        });
+
 
         // redirect to PLAY page with URL.
-        history.push('/play')
+        history.push('/play?game='+newRef.getKey())
     }
 }
