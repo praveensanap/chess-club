@@ -10,7 +10,8 @@ import ChessClock from '../components/chessClock'
 class LiveGame extends Component {
 
     componentDidMount(){
-        this.props.liveGame()
+        let {gameId} = this.props;
+        this.props.listenGame(gameId)
     }
 
     constructor(props){
@@ -21,7 +22,7 @@ class LiveGame extends Component {
 
     move(fen ,move){
         let history = this.props.currentGame.history;
-
+        let gameId = this.props.gameId;
         let m = {
             move:move,
             fen:fen
@@ -32,26 +33,26 @@ class LiveGame extends Component {
         }else{
             history = [m]
         }
-        this.props.move(fen ,history)
+        this.props.move(gameId, fen ,history)
     }
 
 
 
     render(){
-        const {playingBlack, fen  , turn, history, currentPosition } = this.props.currentGame;
+        const {playingBlack, fen  , turn, history, currentPosition , white, black } = this.props.currentGame;
 
         return (
             <Grid container direction="row" justify="center" alignItems="stretch">
                 <Grid item >
                     <Grid container direction="column" alignItems="flex-end" justify="space-around">
                         <Grid item>
-                            <PlayerInfo nickName="Player 1"/>
+                            <PlayerInfo playerInfo={white}/>
                         </Grid>
                         <Grid item>
                             <ChessClock />
                         </Grid>
                         <Grid>
-                            <PlayerInfo nickName="Player 2"/>
+                            <PlayerInfo playerInfo={black}/>
                         </Grid>
                     </Grid>
                 </Grid>

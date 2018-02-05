@@ -27,10 +27,23 @@ export function liveGame(){
     }
 }
 
-export function move(fen,history){
-    return dispatch => game.update(
+export function listenGame(gameId){
+    return dispatch => {
+        game2.child(gameId).on('value' , snapshot =>{
+            const val = snapshot.val()
+            dispatch({
+                type: TYPES.CHESS_MOVE,
+                payload: val
+
+            })
+        })
+    }
+}
+
+
+export function move(gameId,fen,history){
+    return dispatch => game2.child(gameId).update(
         {
-            id:1,
             fen:fen,
             history:history
         }

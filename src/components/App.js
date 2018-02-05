@@ -67,7 +67,7 @@ class AppShell extends Component {
                                 <Switch>
                                     <Route path="/members" component={MemberPage}></Route>
                                     <Route path="/unapprovedMembers" component={UnapprovedMemberPage}></Route>
-                                    <Route path="/play" component={ LiveGamePage }></Route>
+                                    <Route path="/play" render={(props) =>  <LiveGamePage {...props} /> }></Route>
                                     <Route path="/profile" component={EditProfile}></Route>
                                     <Route path="/" component={MemberPage}></Route>
                                 </Switch>

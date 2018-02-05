@@ -7,15 +7,22 @@ class PlayerInfo extends Component {
 
     render(){
 
-        let { nickName } = this.props;
+        let { playerInfo } = this.props;
 
+        let name = ""
+        let rating = ""
+
+        if(playerInfo) {
+            name = playerInfo.name;
+            rating = playerInfo.beforeRating;
+        }
         return(
             <Card>
                 <Typography type="title">
-                    { nickName }
+                    { name }
                 </Typography>
                 <Typography >
-                    1200
+                    { rating }
                 </Typography>
             </Card>
         )
